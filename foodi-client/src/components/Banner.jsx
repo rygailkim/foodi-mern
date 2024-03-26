@@ -12,13 +12,12 @@ const Banner = () => {
                         <img src="/images/home/b-food1.png" alt=""  className='rounded-2xl'/>
                         <div className='space-y-1'>
                             <div>
-                                <h5 className='font-medium mb-1'>Spicy Noodles</h5>
                                 <div className="rating rating-sm">
-                                    <input type="radio" name="rating-2" className="mask mask-star-2 bg-yellow-500" />
-                                    <input type="radio" name="rating-2" className="mask mask-star-2 bg-yellow-500" checked />
-                                    <input type="radio" name="rating-2" className="mask mask-star-2 bg-yellow-500" />
-                                    <input type="radio" name="rating-2" className="mask mask-star-2 bg-yellow-500" />
-                                    <input type="radio" name="rating-2" className="mask mask-star-2 bg-yellow-500" />
+                                    <input type="radio" name="rating-2" className="mask mask-star-2 bg-yellow-500" readOnly/>
+                                    <input type="radio" name="rating-2" className="mask mask-star-2 bg-yellow-500" readOnly />
+                                    <input type="radio" name="rating-2" className="mask mask-star-2 bg-yellow-500" checked readOnly/>
+                                    <input type="radio" name="rating-2" className="mask mask-star-2 bg-yellow-500" readOnly/>
+                                    <input type="radio" name="rating-2" className="mask mask-star-2 bg-yellow-500" readOnly/>
                                 </div>
                                 <p className='text-red'>$18.00</p>
                             </div>
