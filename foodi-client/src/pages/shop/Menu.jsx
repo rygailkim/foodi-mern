@@ -85,7 +85,7 @@ const Menu = () => {
   return (
     <div>
         
-        {/* Menu Banner */}
+        {/* Menu Banner */}reac
         <div className='section-container bg-gradient-to-r from-[#FAFAFA] from-0%  to-[#FCFCFC]'>
             <div className='py-48 flex flex-col justify-center items-center gap-8'>         
                 {/* Banner Text */}
