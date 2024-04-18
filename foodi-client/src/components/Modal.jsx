@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../contexts/AuthProvider";
@@ -11,15 +11,39 @@ const Modal = () => {
     formState: { errors },
   } = useForm();
 
-  const {signUpWithGmail} = useContext(AuthContext)
+  const {signUpWithGmail, login} = useContext(AuthContext)
+  const [errorMessage, setErrorMessage] = useState("")
 
-  const onSubmit = (data) => console.log(data);
+  // Redirecting to homepage or specific page
+  const location = useLocation()
+  const navigate = useNavigate()
+  const from = location.state?.from?.pathname || "/"
+
+  const onSubmit = (data) => {
+    const email = data.email
+    const password = data.password
+    //console.log(email, password)
+    login(email, password).then((userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+      alert("Login successful")
+      document.getElementById("my_modal_5").close()
+      navigate(from, {replace: true})
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      setErrorMessage("Wrong email or password")
+    });
+  };
 
   // Google signin
   const handleLogin = () => {
     signUpWithGmail().then((result) => {
         const user = result.user
         alert("Login successful")
+        document.getElementById("my_modal_5").close()
+        navigate(from, {replace: true})
     }).catch((error) => console.log(error))
   }
 
@@ -69,6 +93,9 @@ const Modal = () => {
               </div>
 
               {/* Error Text */}
+              {
+                errorMessage ? <p className="text-red text-xs italic">{errorMessage}</p> : ""
+              }
 
               {/* Login Button */}
               <div className="form-control mt-6">

@@ -3,12 +3,13 @@ import logo from "/logo.png";
 import { FaRegUser } from "react-icons/fa";
 import Modal from "./Modal";
 import { AuthContext } from "../contexts/AuthProvider";
+import Profile from "./Profile";
 
 const Navbar = () => {
   const [isSticky, setSticky] = useState(false);
 
-  const {user} = useContext(AuthContext)
-  console.log(user)
+  const { user } = useContext(AuthContext);
+  console.log(user);
 
   // Handle scroll functions
   useEffect(() => {
@@ -192,14 +193,18 @@ const Navbar = () => {
               </div>
             </div>
           </div>
-          {/* Contact Button */}
-          <button
-            className="btn bg-green rounded-full px-6 text-white items-center gap-2"
-            onClick={() => document.getElementById("my_modal_5").showModal()}
-          >
-            <FaRegUser />
-            Login
-          </button>
+          {/* Login Button */}
+          {user ? (
+            <Profile user={user}/>
+          ) : (
+            <button
+              className="btn bg-green rounded-full px-6 text-white items-center gap-2"
+              onClick={() => document.getElementById("my_modal_5").showModal()}
+            >
+              <FaRegUser />
+              Login
+            </button>
+          )}
           <Modal />
         </div>
       </div>
