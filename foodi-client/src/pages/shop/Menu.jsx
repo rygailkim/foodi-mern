@@ -16,7 +16,7 @@ const Menu = () => {
     // Fetch data from the backend
     const fetchData = async () => {
         try {
-            const response = await fetch("/menu.json")
+            const response = await fetch("http://localhost:3000/menu")
             const data = await response.json()
             // console.log(data)
             setMenu(data)
@@ -85,7 +85,7 @@ const Menu = () => {
   return (
     <div>
         
-        {/* Menu Banner */}reac
+        {/* Menu Banner */}
         <div className='section-container bg-gradient-to-r from-[#FAFAFA] from-0%  to-[#FCFCFC]'>
             <div className='py-48 flex flex-col justify-center items-center gap-8'>         
                 {/* Banner Text */}
