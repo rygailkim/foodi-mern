@@ -9,6 +9,7 @@ import AuthProvider from "./contexts/AuthProvider.jsx";
 import {
   QueryClient,
   QueryClientProvider,
+  useQuery
 } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
