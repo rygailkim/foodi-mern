@@ -4,7 +4,7 @@ import { FaFacebookF, FaGithub, FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../contexts/AuthProvider";
 
-const Modal = () => {
+const Login = () => {
   const [errorMessage, seterrorMessage] = useState("");
   const { signUpWithGmail, login } = useContext(AuthContext);
 
@@ -29,8 +29,7 @@ const Modal = () => {
         const user = result.user;
         // console.log(user);
         alert("Login successful!");
-        navigate(from, { replace: true });
-        document.getElementById("my_modal_5").close()
+        navigate(from);
         // ...
       })
       .catch((error) => {
@@ -46,16 +45,14 @@ const Modal = () => {
     signUpWithGmail()
       .then((result) => {
         const user = result.user;
-        navigate('/', { replace: true });
+        navigate(from);
       })
       .catch((error) => console.log(error));
   };
-
   return (
-    <dialog id="my_modal_5" className="modal modal-middle sm:modal-middle">
-      <div className="modal-box">
-        <div className="modal-action flex-col justify-center mt-0">
-          <form
+    <div className="max-w-md bg-white shadow w-full mx-auto flex items-center justify-center my-20">
+    <div className="mb-5">
+    <form
             className="card-body"
             method="dialog"
             onSubmit={handleSubmit(onSubmit)}
@@ -112,13 +109,12 @@ const Modal = () => {
             </div>
 
             {/* close btn */}
+            <Link to="/">
             <div
-              htmlFor="my_modal_5"
               className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-              onClick={() => document.getElementById("my_modal_5").close()}
             >
               ✕
-            </div>
+            </div></Link>
 
             <p className="text-center my-2">
               Donot have an account?
@@ -127,24 +123,20 @@ const Modal = () => {
               </Link>
             </p>
           </form>
-          <div className="text-center space-x-3 mb-5">
-            <button
-              onClick={handleRegister}
-              className="btn btn-circle hover:bg-green hover:text-white"
-            >
-              <FaGoogle />
-            </button>
-            <button className="btn btn-circle hover:bg-green hover:text-white">
-              <FaFacebookF />
-            </button>
-            <button className="btn btn-circle hover:bg-green hover:text-white">
-              <FaGithub />
-            </button>
-          </div>
-        </div>
+    <div className="text-center space-x-3">
+        <button onClick={handleRegister} className="btn btn-circle hover:bg-green hover:text-white">
+          <FaGoogle />
+        </button>
+        <button className="btn btn-circle hover:bg-green hover:text-white">
+          <FaFacebookF />
+        </button>
+        <button className="btn btn-circle hover:bg-green hover:text-white">
+          <FaGithub />
+        </button>
       </div>
-    </dialog>
-  );
-};
+    </div>
+  </div>
+  )
+}
 
-export default Modal;
+export default Login

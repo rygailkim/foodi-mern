@@ -3,6 +3,7 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
+    './pages/**/*.{html,js}',
   ],
   theme: {
     extend: {
@@ -10,9 +11,10 @@ export default {
         "green": "#39DB4A",
         "red": "#FF6868",
         "secondary": "#555",
-        "prigmayBG": "#FCFCFC",
+        "prigmayBG": "#FCFCFC"
       }
     },
   },
   plugins: [require("daisyui")],
 }
+

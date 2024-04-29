@@ -12,7 +12,7 @@ const menuSchema = new Schema({
   recipe: String,
   image: String,
   category: String,
-  price: Number,
+  price: Number, 
 });
 
 // create model

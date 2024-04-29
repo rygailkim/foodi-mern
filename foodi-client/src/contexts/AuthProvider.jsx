@@ -1,84 +1,72 @@
-import React, { createContext, useEffect, useState } from "react";
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  GoogleAuthProvider,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  signOut,
-  updateProfile,
-} from "firebase/auth";
-import app from "../firebase/firebase.config";
+/* eslint-disable react/prop-types */
+import React from 'react';
+import { createContext } from 'react';
+import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import app from '../firebase/firebase.config';
 
 export const AuthContext = createContext();
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
-const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+const AuthProvider = ({children}) => {
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-  // Create an account
-  const createUser = (email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password);
-  };
+    const createUser = (email, password) => {
+        setLoading(true);
+        return createUserWithEmailAndPassword(auth, email, password);
+    }
 
-  // Sign up with Gmail account
-  const signUpWithGmail = () => {
-    return signInWithPopup(auth, googleProvider);
-  };
+    const signUpWithGmail = () => {
+        setLoading(true);
+        return signInWithPopup(auth, googleProvider);
+    }
 
-  // Login using email and password
-  const login = (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password);
-  };
+    const login = (email, password) =>{
+        return signInWithEmailAndPassword(auth, email, password);
+    }
 
-  // Logout
-  const logOut = () => {
-    return signOut(auth);
-  };
+    const logOut = () =>{
+        localStorage.removeItem('genius-token');
+        return signOut(auth);
+    }
 
-  // Update profile
-  const updateUserProfile = (name, photoURL) => {
-    return updateProfile(auth.currentUser, {
-      name: name,
-      photoURL: photoURL,
-    });
-  };
+    // update your profile
+    const updateUserProfile = (name, photoURL) => {
+      return  updateProfile(auth.currentUser, {
+            displayName: name, photoURL: photoURL
+          })
+    }
 
-  // Check signed-in user
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-        if (currentUser) {
-          setUser(currentUser)
-          if(currentUser) {
-            const userInfo = {email: currentUser.email}
-          }
-          setLoading(false)
-        } else {
-          setLoading(false)
+    useEffect( () =>{
+        const unsubscribe = onAuthStateChanged(auth, currentUser =>{
+            // console.log(currentUser);
+            setUser(currentUser);
+            setLoading(false);
+        });
+
+        return () =>{
+            return unsubscribe();
         }
-      });
+    }, [])
 
-      return () => {
-        return unsubscribe()
-      }
-  }, [])
+    const authInfo = {
+        user, 
+        loading,
+        createUser, 
+        login, 
+        logOut,
+        signUpWithGmail,
+        updateUserProfile
+    }
 
-  const authInfo = {
-    user,
-    createUser,
-    signUpWithGmail,
-    login,
-    logOut,
-    updateUserProfile,
-    loading
-  };
-
-  return (
-    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
-  );
+    return (
+        <AuthContext.Provider value={authInfo}>
+            {children}
+        </AuthContext.Provider>
+    );
 };
 
 export default AuthProvider;

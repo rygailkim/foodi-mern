@@ -1,19 +1,18 @@
 import React from 'react'
 import Banner from '../../components/Banner'
-import Categories from './Categories'
+import Catagories from './Catagories'
 import SpecialDishes from './SpecialDishes'
 import Testimonials from './Testimonials'
-import Service from './Service'
-import Footer from '../../components/Footer'
+import OurServices from './OurServices'
 
 const Home = () => {
   return (
     <div>
-      <Banner/>
-      <Categories/>
-      <SpecialDishes/>
-      <Testimonials/>
-      <Service/>
+       <Banner/>
+       <Catagories/>
+       <SpecialDishes/>
+       <Testimonials/>
+       <OurServices/>
     </div>
   )
 }

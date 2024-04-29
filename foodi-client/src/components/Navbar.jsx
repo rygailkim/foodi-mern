@@ -9,14 +9,9 @@ import useCart from "../hooks/useCart";
 
 const Navbar = () => {
   const [isSticky, setSticky] = useState(false);
+  const {user, loading} = useContext(AuthContext);
+  const [cart, refetch] = useCart();
 
-  const { user } = useContext(AuthContext);
-  //console.log(user);
-
-  const [cart, refetch] = useCart()
-  //console.log(cart)
-
-  // Handle scroll functions
   useEffect(() => {
     const handleScroll = () => {
       const offset = window.scrollY;
@@ -30,16 +25,18 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
 
     return () => {
-      window.addEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   const navItems = (
     <>
-      <li className="text-green" href="/">
-        <a>Home</a>
-      </li>
       <li>
+        <a href="/" className="text-green">
+          Home
+        </a>
+      </li>
+      <li tabIndex={0}>
         <details>
           <summary>Menu</summary>
           <ul className="p-2">
@@ -55,7 +52,7 @@ const Navbar = () => {
           </ul>
         </details>
       </li>
-      <li>
+      <li tabIndex={0}>
         <details>
           <summary>Services</summary>
           <ul className="p-2">
@@ -76,9 +73,10 @@ const Navbar = () => {
       </li>
     </>
   );
-
   return (
-    <header className="max-w-screen-2xl container mx-auto fixed top-0 left-0 right-0 transition-all duration-300 ease-in-out">
+    <header
+      className={`max-w-screen-2xl container mx-auto fixed top-0 left-0 right-0 transition-all duration-300 ease-in-out`}
+    >
       <div
         className={`navbar xl:px-24 ${
           isSticky
@@ -86,10 +84,9 @@ const Navbar = () => {
             : ""
         }`}
       >
-        {/* Logo */}
         <div className="navbar-start">
-          <div className="dropdown">
-            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+          <div className="dropdown justify-between">
+            <label tabIndex={0} className="btn btn-ghost lg:hidden">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
@@ -104,40 +101,22 @@ const Navbar = () => {
                   d="M4 6h16M4 12h8m-8 6h16"
                 />
               </svg>
-            </div>
+            </label>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-64 space-y-3"
             >
-              <li>
-                <a>Item 1</a>
-              </li>
-              <li>
-                <a>Parent</a>
-                <ul className="p-2">
-                  <li>
-                    <a>Submenu 1</a>
-                  </li>
-                  <li>
-                    <a>Submenu 2</a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a>Item 3</a>
-              </li>
+              {navItems}
             </ul>
           </div>
           <a href="/">
-            <img src={logo} alt="foodi logo" />
+            <img src={logo} alt="" />
           </a>
         </div>
-        {/* Navbar Items */}
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{navItems}</ul>
         </div>
-        <div className="navbar-end">
-          {/* Search Button */}
+        <div className="navbar-end ">
           <button className="btn btn-ghost btn-circle hidden lg:flex">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -154,49 +133,43 @@ const Navbar = () => {
               />
             </svg>
           </button>
-          {/* Cart Items */}
-          <Link to="cart-page" className="dropdown dropdown-end mr-3 lg:flex hidden">
-            <div className="flex-none">
-              <div className="dropdown dropdown-end">
-                <div
-                  tabIndex={0}
-                  role="button"
-                  className="btn btn-ghost btn-circle flex items-center justify-content-center"
-                >
-                  <div className="indicator">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                      />
-                    </svg>
-                    <span className="badge badge-sm indicator-item">{cart.length || 0}</span>
-                  </div>
-                </div>
-              </div>
+         
+         {/* shopping cart */}
+         <Link to="/cart-page">
+         <label
+            tabIndex={0}
+            className="btn btn-ghost btn-circle  lg:flex items-center justify-center mr-3"
+          >
+            <div className="indicator">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+              </svg>
+              <span className="badge badge-sm indicator-item">{cart.length || 0}</span>
             </div>
-          </Link>
-          {/* Login Button */}
-          {user ? (
-            <Profile user={user}/>
-          ) : (
-            <button
-              className="btn bg-green rounded-full px-6 text-white items-center gap-2"
-              onClick={() => document.getElementById("my_modal_5").showModal()}
-            >
-              <FaRegUser />
-              Login
-            </button>
-          )}
-          <Modal />
+          </label>
+         </Link>
+
+          {/* login button */}
+
+          { 
+            user ? <>
+           <Profile user={user}/>
+          </> : <button onClick={()=>document.getElementById('my_modal_5').showModal()} className="btn flex items-center gap-2 rounded-full px-6 bg-green text-white">
+            <FaRegUser /> Login
+          </button>
+          }
+          <Modal/>
         </div>
       </div>
     </header>
