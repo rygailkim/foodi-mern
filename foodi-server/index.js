@@ -3,7 +3,12 @@ const app = express();
 const cors = require("cors");
 const port = process.env.PORT || 3000;
 const mongoose = require("mongoose");
+const bodyParser = require('body-parser')
 require('dotenv').config()
+
+// body parser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // middleware
 app.use(cors());
@@ -22,8 +27,11 @@ mongoose
 // import routes
 const menuRoutes = require('./api/routes/menuRoutes')
 const cartRoutes = require('./api/routes/cartRoutes')
+const userRoutes = require('./api/routes/userRoutes')
+
 app.use('/menu', menuRoutes)
 app.use('/carts', cartRoutes)
+app.use('/users', userRoutes)
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
