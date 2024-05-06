@@ -3,8 +3,9 @@ const app = express();
 const cors = require("cors");
 const port = process.env.PORT || 3000;
 const mongoose = require("mongoose");
-const bodyParser = require('body-parser')
-require('dotenv').config()
+const bodyParser = require("body-parser");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 // body parser
 app.use(bodyParser.json());
@@ -19,19 +20,26 @@ mongoose
   .connect(
     `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@foodi-client.lg435bm.mongodb.net/foodi-client?retryWrites=true&w=majority&appName=foodi-client`
   )
-  .then(
-    console.log("MongoDB connected successfully")
-  )
+  .then(console.log("MongoDB connected successfully"))
   .catch((error) => console.log("Error connecting to MongoDB", error));
 
-// import routes
-const menuRoutes = require('./api/routes/menuRoutes')
-const cartRoutes = require('./api/routes/cartRoutes')
-const userRoutes = require('./api/routes/userRoutes')
+// jwt authentication
+app.post("/jwt", async (req, res) => {
+  const user = req.body;
+  const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: "1hr",
+  });
+  res.send({ token });
+});
 
-app.use('/menu', menuRoutes)
-app.use('/carts', cartRoutes)
-app.use('/users', userRoutes)
+// import routes
+const menuRoutes = require("./api/routes/menuRoutes");
+const cartRoutes = require("./api/routes/cartRoutes");
+const userRoutes = require("./api/routes/userRoutes");
+
+app.use("/menu", menuRoutes);
+app.use("/carts", cartRoutes);
+app.use("/users", userRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

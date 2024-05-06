@@ -3,9 +3,12 @@ const User = require("../models/User");
 const router = express.Router();
 
 const userController = require('../controllers/userControllers')
+const verifyToken = require('../middlewares/verifyToken')
 
 router.get('/', userController.getAllUsers)
 router.post('/', userController.createUser)
-router.delete('/', userController.deleteUser)
+router.delete('/:id', userController.deleteUser)
+router.get('/admin/:email', userController.getAdmin)
+router.patch('/admin/:id', userController.makeAdmin)
 
 module.exports = router;
