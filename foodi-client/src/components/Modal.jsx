@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaFacebookF, FaGithub, FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../contexts/AuthProvider";
+import axios from "axios";
 
 const Modal = () => {
   const [errorMessage, seterrorMessage] = useState("");
@@ -16,7 +17,8 @@ const Modal = () => {
   //react hook form
   const {
     register,
-    handleSubmit, reset,
+    handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -27,18 +29,26 @@ const Modal = () => {
       .then((result) => {
         // Signed in
         const user = result.user;
-        // console.log(user);
-        alert("Login successful!");
-        navigate(from, { replace: true });
-        document.getElementById("my_modal_5").close()
-        // ...
+        const userInfo = {
+          name: data.name,
+          email: data.email,
+        };
+        axiosPublic
+          .post("/users", userInfo)
+          .then((response) => {
+            //console.log(response);
+            alert("Sign In successful!");
+            navigate(from, { replace: true });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         const errorMessage = error.message;
         seterrorMessage("Please provide valid email & password!");
       });
-      reset()
-
+    reset();
   };
 
   // login with google
@@ -46,7 +56,7 @@ const Modal = () => {
     signUpWithGmail()
       .then((result) => {
         const user = result.user;
-        navigate('/', { replace: true });
+        navigate("/", { replace: true });
       })
       .catch((error) => console.log(error));
   };

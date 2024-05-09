@@ -6,10 +6,11 @@ import { AuthContext } from "../contexts/AuthProvider";
 import Profile from "./Profile";
 import { Link } from "react-router-dom";
 import useCart from "../hooks/useCart";
+import useAuth from "../hooks/useAuth";
 
 const Navbar = () => {
   const [isSticky, setSticky] = useState(false);
-  const {user, loading} = useContext(AuthContext);
+  const {user, loading} = useAuth();
   const [cart, refetch] = useCart();
 
   useEffect(() => {
